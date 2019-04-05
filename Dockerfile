@@ -14,5 +14,8 @@ COPY docker-entrypoint.sh /entrypoint.sh
 WORKDIR /screeps
 USER screeps-srv
 
+EXPOSE 21025
+EXPOSE 21026
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["screeps", "start"]
