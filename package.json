@@ -1,0 +1,11 @@
+{
+    "dependencies": {
+        "screepsmod-auth": "~2.4.6",
+        "screepsmod-tickrate": "~1.0.6",
+        "screepsmod-gcltocpu": "~0.3.1",
+        "screepsmod-stats": "~1.0.8",
+        "screepsmod-user-script-debug": "~0.1.0",
+        "screepsmod-remote-console": "~1.0.3",
+        "screepsmod-market": "~1.0.4"
+    }
+}
