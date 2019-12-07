@@ -1,19 +1,26 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
-SCREEPS_PATH=/screeps
-SCREEPS_CONFIG=${SCREEPS_PATH}/.screepsrc
+function init_srv(){
+	echo "===== SETTING UP SCREEPS ====="
+	yarn init -y
+	yarn add screeps
+	npx screeps init
+}
 
-# config check
-if [ ! -e "${SCREEPS_CONFIG}" ]; then
-    if [ -z "$STEAM_KEY" ]; then
-        echo "no STEAM_KEY found -> EXIT"
-        exit 1
-    else
-        echo "initilising screeps..."
+function run_srv(){
+	cd /screeps
+	exec npx screeps start
+}
 
-        # pass our steam key into the init process
-        echo "${STEAM_KEY}" | screeps init "${SCREEPS_PATH}"
-    fi
-fi
-
-exec "$@"
+case $1 in
+	init)
+		init_srv
+		;;
+	run)
+		run_srv
+		;;
+	*)
+		exec "$@"
+		;;
+esac
