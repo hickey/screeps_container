@@ -1,27 +1,22 @@
-FROM node:10-alpine
-MAINTAINER Gerard Hickey <hickey@kinetic-compute.com>
-
-
-COPY docker-entrypoint.sh /entrypoint.sh
-COPY package.json /tmp
-
-RUN apk --update add \
-        python \
-        make \
-        g++ \
- &&     rm -rf /var/cache/apk/* \
- &&     mkdir -p /usr/local/lib/node_modules/screeps/node_modules/isolated-vm/.node-gyp \
- &&     npm install -g screeps \
- &&     adduser -S -g 'Screeps Server' -h '/screeps' screeps-srv
-
+FROM node:10.13.0-stretch
+ENV SCREEPS_VERSION 4.0.5
 WORKDIR /screeps
-USER screeps-srv
+COPY package.json .
+RUN yarn add screeps@"$SCREEPS_VERSION"
 
-EXPOSE 6001
-EXPOSE 21025
-EXPOSE 21026
-EXPOSE 21030
+FROM node:10.13.0-stretch
+VOLUME /screeps
+WORKDIR /screeps
+ENV DB_PATH=/screeps/db.json ASSET_DIR=/screeps/assets \
+        MODFILE=/screeps/mods.json GAME_PORT=21025 \
+        GAME_HOST=0.0.0.0 CLI_PORT=21026 CLI_HOST=0.0.0.0 \
+        STORAGE_PORT=21027 STORAGE_HOST=localhost \
+        DRIVER_MODULE="@screeps/driver"
+WORKDIR /screeps
+#RUN apk add --no-cache git
+COPY --from=0 /screeps /screeps
 
+COPY "docker-entrypoint.sh" /
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["screeps", "start"]
+CMD ["run"]
