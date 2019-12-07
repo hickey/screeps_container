@@ -6,6 +6,6 @@
         "screepsmod-stats": "~1.0.8",
         "screepsmod-user-script-debug": "~0.1.0",
         "screepsmod-remote-console": "~1.0.3",
-        "screepsmod-market": "~1.0.4"
+        "screepsmod-market": "~1.2.0"
     }
 }
